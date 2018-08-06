@@ -96,10 +96,10 @@ void run() {
         }
 
         /* calculate time diff */
-        diff = (int)(clock() - begin);
+        diff = (int)(clock() - begin) / CLOCKS_PER_SEC;
 
         /* tick */
-        usleep(TICK_SPEED - diff*10);
+        usleep(TICK_SPEED - diff*1000000);
     }
 
     /* free memory */
