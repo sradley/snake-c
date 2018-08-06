@@ -2,12 +2,11 @@
 game.c
 */
 
-/* TODO: implement draw_screen function */
-/* TODO: implement render_snake function */
 /* TODO: finish run function */
 /* TODO: write function comments */
 
 #include <snake.h>
+#include <stdio.h>
 
 
 int main() {
@@ -16,24 +15,28 @@ int main() {
 
     /* start game */
     run();
+    endwin();
+
     return 0;
 }
 
 /* run ... */
 void run() {
-    int max_x = 0;
-    int max_y = 0;
-    int direction = LEFT;
+    int max_x, max_y;
+    int direction = LEFT;  /* rand() % 4 */
 
     /* init screen */
     initscr();
     noecho();
     curs_set(FALSE);
+    getmaxyx(stdscr, max_y, max_x);
+    WINDOW *win = draw_screen(max_x, max_y);
 
     /* init snake */
     snake_node_t *snake_head = malloc(sizeof(snake_node_t));
     assert(snake_head);
     snake_head->alive = 1;  /* make alive */
+    snake_head->next= NULL;
 
     /* set snake head location to centre of screen */
     snake_head->loc.x = max_x / 2;
@@ -45,9 +48,11 @@ void run() {
     /* begin program execution */
     while (1) {
         /* render objects */
-        draw_screen(max_x, max_y);
-        render_snake(snake_head);
-        render_food(food);
+        wclear(win);
+        win = draw_screen(max_x, max_y);
+        render_snake(snake_head, win);
+        render_food(food, win);
+        wrefresh(win);
 
         /* move snake */
         move_snake(snake_head, direction);
@@ -76,16 +81,30 @@ void run() {
 }
 
 
-/* draw_screen ... */
-void draw_screen(int max_x, int max_y) {
+/* draw_screen .. */
+WINDOW* draw_screen(int max_x, int max_y) {
+    /* init window */
+    WINDOW *win = newwin(max_y-2, max_x-2, 1, 1);
+
+    /* draw box */
+    box(win, 0, 0);
+    touchwin(win);
+
+    return win;
 }
 
 
 /* render_snake ... */
-void render_snake(snake_node_t *snake_head) {
+void render_snake(snake_node_t *snake_head, WINDOW *win) {
+    snake_node_t *cur = snake_head;
+    while (cur != NULL) {
+        mvwaddch(win, cur->loc.y, cur->loc.x, 'S');
+        cur = cur->next;
+    }
 }
 
 
 /* render_food ... */
-void render_food(food_t *food) {
+void render_food(food_t *food, WINDOW *win) {
+    mvwaddch(win, food->loc.y, food->loc.x, 'F');
 }

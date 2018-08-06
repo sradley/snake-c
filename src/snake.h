@@ -2,6 +2,7 @@
 #define SNAKE_GAME_H_
 
 #define _DEFAULT_SOURCE
+#define NCURSES_NO_UTF8_ACS
 
 #include <ncurses.h>
 #include <unistd.h>
@@ -11,8 +12,7 @@
 
 
 /* constants */
-#define SNAKE_START_LEN 1
-#define TICK_SPEED      200000  /* 0.2 sec in microsec */
+#define TICK_SPEED      100000  /* 0.2 sec in microsec */
 #define LEFT            0
 #define UP              1
 #define RIGHT           2
@@ -46,18 +46,18 @@ typedef struct food {
 /* function declarations */
 /* game logic */
 void    run();
-void    draw_screen(int max_x, int max_y);
-void    render_food(food_t *food);
-void    render_snake(snake_node_t *snake_head);
+WINDOW* draw_screen(int max_x, int max_y);
+void    render_food(food_t *food, WINDOW *win);
+void    render_snake(snake_node_t *snake_head, WINDOW *win);
 
 /* snake functions */
-int     snake_len(snake_node_t *snake_head);
-int     snake_contains_loc(snake_node_t *snake_head, int x, int y);
-void    move_snake(snake_node_t *snake_head, int direction);
-void    grow_snake(snake_node_t *snake_head);
-void    check_for_collision(snake_node_t *snake_head, int max_x, int max_y);
-int     collides_with_self(snake_node_t *snake_head);
-void    free_snake(snake_node_t *snake_head);
+int  snake_len(snake_node_t *snake_head);
+int  snake_contains_loc(snake_node_t *snake_head, int x, int y);
+void move_snake(snake_node_t *snake_head, int direction);
+void grow_snake(snake_node_t *snake_head);
+void check_for_collision(snake_node_t *snake_head, int max_x, int max_y);
+int  collides_with_self(snake_node_t *snake_head);
+void free_snake(snake_node_t *snake_head);
 
 /* food functions */
 food_t* create_food(snake_node_t *snake_head, int max_x, int max_y);

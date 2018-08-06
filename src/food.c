@@ -2,6 +2,8 @@
 food.c
 */
 
+/* TODO: write function comments */
+
 #include <snake.h>
 
 
@@ -20,8 +22,8 @@ food_t* create_food(snake_node_t *snake_head, int max_x, int max_y) {
     location_t locs[locs_len];
 
     c = 0;
-    for (i = 1; i < max_x-1; i++) {
-        for (j = 1; j < max_y-1; j++) {
+    for (i = 2; i < max_x-2; i++) {
+        for (j = 2; j < max_y-2; j++) {
             if (!snake_contains_loc(snake_head, i, j)) {
                 /* add valid location to loc in array */
                 locs[c].x = i;
