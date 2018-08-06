@@ -2,7 +2,7 @@
 game.c
 */
 
-/* TODO: finish run function */
+/* TODO: add title and quit messages */
 /* TODO: write function comments */
 
 #include <snake.h>
@@ -31,8 +31,16 @@ void run() {
     cbreak();
     noecho();
     curs_set(FALSE);
+
+    /* init window */
     getmaxyx(stdscr, max_y, max_x);
     WINDOW *win = draw_screen(max_x, max_y);
+
+    /* init color */
+    start_color();
+    use_default_colors();
+    init_pair(1, COLOR_RED, COLOR_RED);
+    init_pair(2, COLOR_WHITE, COLOR_WHITE);
 
     /* init snake */
     snake_node_t *snake_head = malloc(sizeof(snake_node_t));
@@ -56,16 +64,16 @@ void run() {
         ch = wgetch(win);
         switch(ch) {
             case KEY_LEFT:
-                direction = LEFT;
+                if (direction != RIGHT) direction = LEFT;
                 break;
             case KEY_UP:
-                direction = UP;
+                if (direction != DOWN) direction = UP;
                 break;
             case KEY_RIGHT:
-                direction = RIGHT;
+                if (direction != LEFT) direction = RIGHT;
                 break;
             case KEY_DOWN:
-                direction = DOWN;
+                if (direction != UP) direction = DOWN;
                 break;
             default:
                 break;
@@ -125,15 +133,27 @@ WINDOW* draw_screen(int max_x, int max_y) {
 
 /* render_snake ... */
 void render_snake(snake_node_t *snake_head, WINDOW *win) {
+    char ch[1] = {(char)219};
+
+    wattron(win, COLOR_PAIR(2));
+
     snake_node_t *cur = snake_head;
     while (cur != NULL) {
-        mvwaddch(win, cur->loc.y, cur->loc.x, 'S');
+        if (cur->loc.y && cur->loc.x) {
+            mvwprintw(win, cur->loc.y, cur->loc.x, ch);
+        }
         cur = cur->next;
     }
+
+    wattroff(win, COLOR_PAIR(2));
 }
 
 
 /* render_food ... */
 void render_food(food_t *food, WINDOW *win) {
-    mvwaddch(win, food->loc.y, food->loc.x, 'F');
+    char ch[1] = {(char)219};
+
+    wattron(win, COLOR_PAIR(1));
+    mvwprintw(win, food->loc.y, food->loc.x, ch);
+    wattroff(win, COLOR_PAIR(1));
 }

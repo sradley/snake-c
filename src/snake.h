@@ -12,7 +12,7 @@
 
 
 /* constants */
-#define TICK_SPEED      85000  /* 0.1 sec in microsec */
+#define TICK_SPEED      70000  /* 0.1 sec in microsec */
 #define LEFT            0
 #define UP              1
 #define RIGHT           2
