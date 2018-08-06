@@ -79,6 +79,12 @@ void run() {
                 break;
         }
 
+        /* did snake hit itself or a wall */
+        check_for_collision(snake_head, max_x, max_y);
+        if (!snake_head->alive) {
+            break;
+        }
+
         /* render objects */
         wclear(win);
         win = draw_screen(max_x, max_y);
@@ -95,12 +101,6 @@ void run() {
             grow_snake(snake_head);                        /* grow snake */
             free(food);                                    /* free old food */
             food = create_food(snake_head, max_x, max_y);  /* create food */
-        }
-
-        /* did snake hit itself or a wall */
-        check_for_collision(snake_head, max_x, max_y);
-        if (!snake_head->alive) {
-            break;
         }
 
         /* calculate time diff */
