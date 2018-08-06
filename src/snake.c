@@ -129,4 +129,14 @@ void check_for_collision(snake_node_t *snake_head, int max_x, int max_y) {
 
 /* eat_food ... */
 void eat_food(snake_node_t *snake_head, food_t *food) {
+    if (snake_head->x != food->x) {
+        return;
+    }
+
+    if (snake_head->y != food->y) {
+        return;
+    }
+
+    /* now we know there is a collision */
+    food->eaten = 1;  /* change food status to eaten */
 }
