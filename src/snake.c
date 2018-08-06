@@ -163,15 +163,31 @@ void move_snake(snake_node_t *snake_head, int direction) {
 }
 
 
-/* grow_snake ... */
+/* grow_snake appends a new snake_node_t to the end of snake */
 void grow_snake(snake_node_t *snake_head) {
-    /* append node to end of snake */
+    snake_node_t *cur = snake_head;
+
+    while (cur->next != NULL) {
+        cur = cur->next;
+    }
+
+    /* create node at cur->next */
+    cur->next = malloc(sizeof(snake_node_t));
+    assert(cur->next);
+
+    cur->next->next = NULL;
 }
 
 
 /* free_snake ... */
 void free_snake(snake_node_t *snake_head) {
     /* free each node in snake */
+    snake_node_t *cur = snake_head;
+
+    while (cur != NULL) {
+        free(cur);
+        cur = cur->next;
+    }
 }
 
 
