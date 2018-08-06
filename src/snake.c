@@ -191,6 +191,14 @@ void check_for_collision(snake_node_t *snake_head, int max_x, int max_y) {
 
 /* collides_with_self ... */
 int collides_with_self(snake_node_t *snake_head) {
+    snake_node_t *cur = snake_head->next;
+
+    while (cur->next != NULL) {
+        if (cur->loc.x != snake_head->loc.x) continue;
+        if (cur->loc.y != snake_head->loc.y) continue;
+        return 1;
+    }
+
     return 0;
 }
 
