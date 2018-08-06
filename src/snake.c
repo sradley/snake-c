@@ -111,6 +111,7 @@ food_t* create_food(snake_node_t *snake_head, int max_x, int max_y) {
     food->eaten = 0;
 
     /* TODO: create array or list of possible location options */
+    location_t locs[max_x*max_y - snake_len(snake_head)];
 
     x = rand() % max_x;  /* change max_x to array length */
     y = rand() % max_y;  /* change max_y to array lenght */
@@ -126,6 +127,21 @@ food_t* create_food(snake_node_t *snake_head, int max_x, int max_y) {
 
 /* render_snake ... */
 void render_snake(snake_node_t *snake_head) {
+}
+
+
+/* snake_len ... */
+int snake_len(snake_node_t *snake_head) {
+    assert(snake_head);
+
+    int len = 0;
+    snake_node_t *cur = snake_head;
+
+    while (cur->next != NULL) {
+        len++;
+    }
+
+    return len;
 }
 
 

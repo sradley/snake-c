@@ -30,6 +30,7 @@ void    run();
 void    draw_screen(int max_x, int max_y);
 food_t* create_food(snake_node_t *snake_head, int max_x, int max_y);
 void    render_snake(snake_node_t *snake_head);
+int     snake_len(snake_node_t *snake_head);
 void    render_food(food_t *food);
 void    move_snake(snake_node_t *snake_head, int direction);
 void    grow_snake(snake_node_t *snake_head);
