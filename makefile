@@ -15,3 +15,4 @@ $(MAIN): $(SRCS)
 
 clean:
 	$(RM) $(MAIN)
+	@echo $(MAIN) removed

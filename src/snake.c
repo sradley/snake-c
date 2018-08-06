@@ -33,8 +33,9 @@ int main() {
 
 /* run ... */
 void run() {
-    int max_x, max_y;
-    int direction = 0;  /* 0 = left, 1 = up, 2 = right, 3 = down */
+    int max_x = 0;
+    int max_y = 0;
+    int direction = LEFT;
 
     /* init screen */
     initscr();
@@ -60,12 +61,12 @@ void run() {
         render_food(food);
 
         /* move snake */
-        move_snake(snake_head);
+        move_snake(snake_head, direction);
 
         /* did food get eaten */
         eat_food(snake_head, food);
         if (food->eaten) {
-            snake_grow(snake_head);                        /* grow snake */
+            grow_snake(snake_head);                        /* grow snake */
             free(food);                                    /* free old food */
             food = create_food(snake_head, max_x, max_y);  /* create food */
         }
@@ -126,17 +127,51 @@ void render_food(food_t *food) {
 
 
 /* move_snake ... */
-void move_snake(snake_node_t *snake_head) {
+void move_snake(snake_node_t *snake_head, int direction) {
+    assert(snake_head);
+
+    /* move head in direction */
+    snake_node_t *prev = snake_head;
+    switch(direction) {
+        case LEFT:
+            prev->loc.x--;  /* move left */
+            break;
+        case UP:
+            prev->loc.y--;  /* move up */
+            break;
+        case RIGHT:
+            prev->loc.x++;  /* move right */
+            break;
+        case DOWN:
+            prev->loc.y++;  /* move down */
+            break;
+        default:
+            exit(EXIT_FAILURE);  /* invalid direction */
+    }
+
+    /* return if cur->next doesn't exist */
+    if (prev->next == NULL) return;
+    snake_node_t *cur = prev->next;
+
+    while (cur->next != NULL) {
+        cur->loc.x = prev->loc.x;
+        cur->loc.y = prev->loc.y;
+
+        prev = cur;
+        cur = cur->next;
+    }
 }
 
 
 /* grow_snake ... */
 void grow_snake(snake_node_t *snake_head) {
+    /* append node to end of snake */
 }
 
 
 /* free_snake ... */
 void free_snake(snake_node_t *snake_head) {
+    /* free each node in snake */
 }
 
 
@@ -154,6 +189,7 @@ void check_for_collision(snake_node_t *snake_head, int max_x, int max_y) {
 }
 
 
+/* collides_with_self ... */
 int collides_with_self(snake_node_t *snake_head) {
     return 0;
 }
