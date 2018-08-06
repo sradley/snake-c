@@ -2,10 +2,8 @@
 snake.c
 */
 
-/* TODO: finish create_food function */
 /* TODO: implement draw_screen function */
 /* TODO: implement render_snake function */
-/* TODO: implement render_food function */
 /* TODO: finish run function */
 /* TODO: write function comments */
 
@@ -102,7 +100,7 @@ void draw_screen(int max_x, int max_y) {
 
 /* create_food ... */
 food_t* create_food(snake_node_t *snake_head, int max_x, int max_y) {
-    int x, y;
+    int locs_len, xy, i, j, c;
 
     food_t *food = malloc(sizeof(food_t));  /* allocate memory */
     assert(food);
@@ -110,16 +108,25 @@ food_t* create_food(snake_node_t *snake_head, int max_x, int max_y) {
     /* set values */
     food->eaten = 0;
 
-    /* TODO: create array or list of possible location options */
-    location_t locs[max_x*max_y - snake_len(snake_head)];
+    /* create array of possible location options */
+    locs_len = max_x*max_y - snake_len(snake_head);
+    location_t locs[locs_len];
 
-    x = rand() % max_x;  /* change max_x to array length */
-    y = rand() % max_y;  /* change max_y to array lenght */
+    c = 0;
+    for (i = 1; i < max_x-1; i++) {
+        for (j = 1; j < max_y-1; j++) {
+            if (!snake_contains_loc(snake_head, i, j)) {
+                /* add valid location to loc in array */
+                locs[c].x = i;
+                locs[c].y = j;
+                c++;
+            }
+        }
+    }
 
-    /* TODO: set food->x to array_of_locations[x].x */
-    food->loc.x = x;
-    /* TODO: set food->y to array_of_locations[y].y */
-    food->loc.y = y;
+    /* assign a valid value to food->loc */
+    xy = rand() % locs_len;
+    food->loc = locs[xy];
 
     return food;
 }
@@ -142,6 +149,20 @@ int snake_len(snake_node_t *snake_head) {
     }
 
     return len;
+}
+
+
+/* snake_contains_loc */
+int snake_contains_loc(snake_node_t *snake_head, int x, int y) {
+    snake_node_t *cur = snake_head;
+
+    while (cur->next != NULL) {
+        if (cur->loc.x != x) continue;
+        if (cur->loc.y != y) continue;
+        return 1;
+    }
+
+    return 0;
 }
 
 
