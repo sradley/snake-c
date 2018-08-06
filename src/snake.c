@@ -2,6 +2,13 @@
 snake.c
 */
 
+/* TODO: finish create_food function */
+/* TODO: implement draw_screen function */
+/* TODO: implement render_snake function */
+/* TODO: implement render_food function */
+/* TODO: finish run function */
+/* TODO: write function comments */
+
 #include <snake.h>
 
 /* typedefs and structs */
@@ -57,6 +64,7 @@ void run() {
     /* begin program execution */
     while (1) {
         /* render objects */
+        draw_screen(max_x, max_y);
         render_snake(snake_head);
         render_food(food);
 
@@ -88,7 +96,7 @@ void run() {
 
 
 /* draw_screen ... */
-void draw_screen() {
+void draw_screen(int max_x, int max_y) {
 }
 
 
@@ -102,14 +110,14 @@ food_t* create_food(snake_node_t *snake_head, int max_x, int max_y) {
     /* set values */
     food->eaten = 0;
 
-    /* create array or list of possible location options */
+    /* TODO: create array or list of possible location options */
 
     x = rand() % max_x;  /* change max_x to array length */
     y = rand() % max_y;  /* change max_y to array lenght */
 
-    /* set food->x to array_of_locations[x].x */
+    /* TODO: set food->x to array_of_locations[x].x */
     food->loc.x = x;
-    /* set food->y to array_of_locations[y].y */
+    /* TODO: set food->y to array_of_locations[y].y */
     food->loc.y = y;
 
     return food;
@@ -167,6 +175,7 @@ void move_snake(snake_node_t *snake_head, int direction) {
 void grow_snake(snake_node_t *snake_head) {
     snake_node_t *cur = snake_head;
 
+    /* go to end of snake */
     while (cur->next != NULL) {
         cur = cur->next;
     }
@@ -195,6 +204,7 @@ void free_snake(snake_node_t *snake_head) {
 void check_for_collision(snake_node_t *snake_head, int max_x, int max_y) {
     /* if !collides with left or right wall */
     if (snake_head->loc.x > 0 && snake_head->loc.x < max_x) return;
+
     /* if !collides with top or bottom wall */
     if (snake_head->loc.y > 0 && snake_head->loc.y < max_y) return;
 
