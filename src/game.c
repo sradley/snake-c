@@ -22,11 +22,13 @@ int main() {
 
 /* run ... */
 void run() {
-    int max_x, max_y;
+    int max_x, max_y, ch, diff;
+    clock_t begin;
     int direction = LEFT;  /* rand() % 4 */
 
     /* init screen */
     initscr();
+    cbreak();
     noecho();
     curs_set(FALSE);
     getmaxyx(stdscr, max_y, max_x);
@@ -47,6 +49,28 @@ void run() {
 
     /* begin program execution */
     while (1) {
+        /* start timer */
+        begin = clock();
+
+        /* check for input */
+        ch = wgetch(win);
+        switch(ch) {
+            case KEY_LEFT:
+                direction = LEFT;
+                break;
+            case KEY_UP:
+                direction = UP;
+                break;
+            case KEY_RIGHT:
+                direction = RIGHT;
+                break;
+            case KEY_DOWN:
+                direction = DOWN;
+                break;
+            default:
+                break;
+        }
+
         /* render objects */
         wclear(win);
         win = draw_screen(max_x, max_y);
@@ -71,8 +95,11 @@ void run() {
             break;
         }
 
+        /* calculate time diff */
+        diff = (int)(clock() - begin);
+
         /* tick */
-        usleep(TICK_SPEED);
+        usleep(TICK_SPEED - diff*10);
     }
 
     /* free memory */
@@ -85,6 +112,8 @@ void run() {
 WINDOW* draw_screen(int max_x, int max_y) {
     /* init window */
     WINDOW *win = newwin(max_y-2, max_x-2, 1, 1);
+    keypad(win, TRUE);
+    wtimeout(win, 5);
 
     /* draw box */
     box(win, 0, 0);

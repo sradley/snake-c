@@ -22,8 +22,8 @@ food_t* create_food(snake_node_t *snake_head, int max_x, int max_y) {
     location_t locs[locs_len];
 
     c = 0;
-    for (i = 2; i < max_x-2; i++) {
-        for (j = 2; j < max_y-2; j++) {
+    for (i = 1; i < max_x-3; i++) {
+        for (j = 1; j < max_y-3; j++) {
             if (!snake_contains_loc(snake_head, i, j)) {
                 /* add valid location to loc in array */
                 locs[c].x = i;

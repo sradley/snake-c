@@ -110,12 +110,12 @@ void grow_snake(snake_node_t *snake_head) {
 /* check_for_collision ... */
 void check_for_collision(snake_node_t *snake_head, int max_x, int max_y) {
     /* if collides with left or right wall */
-    if (snake_head->loc.x < 0 || snake_head->loc.x >= max_x-2) {
+    if (snake_head->loc.x < 1 || snake_head->loc.x >= max_x-3) {
         snake_head->alive = 0;
     }
 
     /* if collides with top or bottom wall */
-    if (snake_head->loc.y < 0 || snake_head->loc.y >= max_y-2) {
+    if (snake_head->loc.y < 1 || snake_head->loc.y >= max_y-3) {
         snake_head->alive = 0;
     }
 
