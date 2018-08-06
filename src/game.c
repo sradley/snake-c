@@ -147,8 +147,7 @@ void render_snake(snake_node_t *snake_head, WINDOW *win, int max_x, int max_y) {
 
     snake_node_t *cur = snake_head;
     while (cur != NULL) {
-        if (cur->loc.y && cur->loc.x && cur->loc.y < max_y-3 &&
-                cur->loc.x < max_x-3) {
+        if (cur->loc.y && cur->loc.x && cur->loc.y < max_y-3 && cur->loc.x < max_x-3) {
             mvwprintw(win, cur->loc.y, cur->loc.x, ch);
         }
         cur = cur->next;
