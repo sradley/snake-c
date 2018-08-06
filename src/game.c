@@ -24,7 +24,7 @@ int main() {
 void run() {
     int max_x, max_y, ch, diff;
     clock_t begin;
-    int direction = LEFT;  /* rand() % 4 */
+    int direction = rand() % 4;
 
     /* init screen */
     initscr();
@@ -85,15 +85,15 @@ void run() {
             break;
         }
 
+        /* move snake */
+        move_snake(snake_head, direction);
+
         /* render objects */
         wclear(win);
         win = draw_screen(max_x, max_y);
         render_snake(snake_head, win);
         render_food(food, win);
         wrefresh(win);
-
-        /* move snake */
-        move_snake(snake_head, direction);
 
         /* did food get eaten */
         eat_food(snake_head, food);
@@ -121,7 +121,7 @@ WINDOW* draw_screen(int max_x, int max_y) {
     /* init window */
     WINDOW *win = newwin(max_y-2, max_x-2, 1, 1);
     keypad(win, TRUE);
-    wtimeout(win, 5);
+    wtimeout(win, 1);
 
     /* draw box */
     box(win, 0, 0);
