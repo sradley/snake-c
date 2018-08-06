@@ -18,7 +18,7 @@ food_t* create_food(snake_node_t *snake_head, int max_x, int max_y) {
     food->eaten = 0;
 
     /* create array of possible location options */
-    locs_len = max_x*max_y - snake_len(snake_head);
+    locs_len = (max_x-4)*(max_y-4) - snake_len(snake_head);
     location_t locs[locs_len];
 
     c = 0;
