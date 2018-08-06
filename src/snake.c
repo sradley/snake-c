@@ -5,17 +5,20 @@ snake.c
 #include <snake.h>
 
 /* typedefs and structs */
+typedef struct location {
+    int x;
+    int y;
+} location_t;
+
 typedef struct snake_node {
-    int          x;
-    int          y;
+    location_t   loc;
     int          alive;
     snake_node_t *next;
 } snake_node_t;
 
 typedef struct food {
-    int x;
-    int y;
-    int eaten;
+    location_t loc;
+    int        eaten;
 } food_t;
 
 
@@ -31,6 +34,7 @@ int main() {
 /* run ... */
 void run() {
     int max_x, max_y;
+    int direction = 0;  /* 0 = left, 1 = up, 2 = right, 3 = down */
 
     /* init screen */
     initscr();
@@ -43,21 +47,20 @@ void run() {
     snake_head->alive = 1;  /* make alive */
 
     /* set snake head location to centre of screen */
-    snake_head->x = max_x / 2;
-    snake_head->y = max_y / 2;
+    snake_head->loc.x = max_x / 2;
+    snake_head->loc.y = max_y / 2;
 
     /* init food */
     food_t *food = create_food(snake_head, max_x, max_y);
-
-    /* set food location */
-    food->x = rand() % max_x;
-    food->y = rand() % max_y;
 
     /* begin program execution */
     while (1) {
         /* render objects */
         render_snake(snake_head);
         render_food(food);
+
+        /* move snake */
+        move_snake(snake_head);
 
         /* did food get eaten */
         eat_food(snake_head, food);
@@ -90,13 +93,23 @@ void draw_screen() {
 
 /* create_food ... */
 food_t* create_food(snake_node_t *snake_head, int max_x, int max_y) {
+    int x, y;
+
     food_t *food = malloc(sizeof(food_t));  /* allocate memory */
     assert(food);
 
     /* set values */
     food->eaten = 0;
-    food->x = rand() % max_x;
-    food->y = rand() % max_y;
+
+    /* create array or list of possible location options */
+
+    x = rand() % max_x;  /* change max_x to array length */
+    y = rand() % max_y;  /* change max_y to array lenght */
+
+    /* set food->x to array_of_locations[x].x */
+    food->loc.x = x;
+    /* set food->y to array_of_locations[y].y */
+    food->loc.y = y;
 
     return food;
 }
@@ -112,6 +125,11 @@ void render_food(food_t *food) {
 }
 
 
+/* move_snake ... */
+void move_snake(snake_node_t *snake_head) {
+}
+
+
 /* grow_snake ... */
 void grow_snake(snake_node_t *snake_head) {
 }
@@ -124,16 +142,30 @@ void free_snake(snake_node_t *snake_head) {
 
 /* check_for_collision ... */
 void check_for_collision(snake_node_t *snake_head, int max_x, int max_y) {
+    /* if !collides with left or right wall */
+    if (snake_head->loc.x > 0 && snake_head->loc.x < max_x) return;
+    /* if !collides with top or bottom wall */
+    if (snake_head->loc.y > 0 && snake_head->loc.y < max_y) return;
+
+    /* if !collides with self */
+    if (!collides_with_self(snake_head)) return;
+
+    snake_head->alive = 0;  /* snake is dead */
+}
+
+
+int collides_with_self(snake_node_t *snake_head) {
+    return 0;
 }
 
 
 /* eat_food ... */
 void eat_food(snake_node_t *snake_head, food_t *food) {
-    if (snake_head->x != food->x) {
+    if (snake_head->loc.x != food->loc.x) {
         return;
     }
 
-    if (snake_head->y != food->y) {
+    if (snake_head->loc.y != food->loc.y) {
         return;
     }
 
