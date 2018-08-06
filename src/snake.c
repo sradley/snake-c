@@ -23,7 +23,7 @@ int snake_len(snake_node_t *snake_head) {
 }
 
 
-/* snake_contains_loc */
+/* snake_contains_loc ... */
 int snake_contains_loc(snake_node_t *snake_head, int x, int y) {
     snake_node_t *cur = snake_head;
 

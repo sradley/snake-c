@@ -48,7 +48,7 @@ typedef struct food {
 void    run();
 WINDOW* draw_screen(int max_x, int max_y);
 void    render_food(food_t *food, WINDOW *win);
-void    render_snake(snake_node_t *snake_head, WINDOW *win);
+void    render_snake(snake_node_t *snake_head, WINDOW *win, int max_x, int max_y);
 
 /* snake functions */
 int  snake_len(snake_node_t *snake_head);

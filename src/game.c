@@ -2,7 +2,6 @@
 game.c
 */
 
-/* TODO: add title and quit messages */
 /* TODO: write function comments */
 
 #include <snake.h>
@@ -22,7 +21,7 @@ int main() {
 
 /* run ... */
 void run() {
-    int max_x, max_y, ch, diff;
+    int max_x, max_y, ch, diff, score = 0;
     clock_t begin;
     int direction = rand() % 4;
 
@@ -31,9 +30,15 @@ void run() {
     cbreak();
     noecho();
     curs_set(FALSE);
+    getmaxyx(stdscr, max_y, max_x);
+
+    /* add screen text */
+    mvwprintw(stdscr, 0, 1, "snake-c 0.0.1");
+    mvwprintw(stdscr, max_y-1, max_x-21, "press ctrl-C to quit");
+    mvwprintw(stdscr, max_y-1, 1, "score: %d", score);
+    refresh();
 
     /* init window */
-    getmaxyx(stdscr, max_y, max_x);
     WINDOW *win = draw_screen(max_x, max_y);
 
     /* init color */
@@ -85,13 +90,12 @@ void run() {
             break;
         }
 
-        /* move snake */
         move_snake(snake_head, direction);
 
         /* render objects */
         wclear(win);
         win = draw_screen(max_x, max_y);
-        render_snake(snake_head, win);
+        render_snake(snake_head, win, max_x, max_y);
         render_food(food, win);
         wrefresh(win);
 
@@ -101,6 +105,10 @@ void run() {
             grow_snake(snake_head);                        /* grow snake */
             free(food);                                    /* free old food */
             food = create_food(snake_head, max_x, max_y);  /* create food */
+
+            score++;
+            mvwprintw(stdscr, max_y-1, 1, "score: %d", score);
+            refresh();
         }
 
         /* calculate time diff */
@@ -132,14 +140,15 @@ WINDOW* draw_screen(int max_x, int max_y) {
 
 
 /* render_snake ... */
-void render_snake(snake_node_t *snake_head, WINDOW *win) {
+void render_snake(snake_node_t *snake_head, WINDOW *win, int max_x, int max_y) {
     char ch[1] = {(char)219};
 
     wattron(win, COLOR_PAIR(2));
 
     snake_node_t *cur = snake_head;
     while (cur != NULL) {
-        if (cur->loc.y && cur->loc.x) {
+        if (cur->loc.y && cur->loc.x && cur->loc.y < max_y-3 &&
+                cur->loc.x < max_x-3) {
             mvwprintw(win, cur->loc.y, cur->loc.x, ch);
         }
         cur = cur->next;
