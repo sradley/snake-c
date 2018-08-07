@@ -7,7 +7,7 @@ game.c
 #include <snake.h>
 
 
-int main() {
+int main(void) {
     /* init random number generator */
     srand(time(NULL));
 
