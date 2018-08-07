@@ -5,7 +5,6 @@ game.c
 /* TODO: write function comments */
 
 #include <snake.h>
-#include <stdio.h>
 
 
 int main() {
