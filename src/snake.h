@@ -13,6 +13,7 @@
 
 /* constants */
 #define TICK_SPEED      70000  /* 0.1 sec in microsec */
+#define SNAKE_START_LEN 1
 #define LEFT            0
 #define UP              1
 #define RIGHT           2

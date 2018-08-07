@@ -20,7 +20,9 @@ int main() {
 
 /* run ... */
 void run() {
-    int max_x, max_y, ch, diff, score = 0;
+    int max_x, max_y, ch, diff;
+    int score = 0;
+    int i = 1;
     clock_t begin;
     int direction = rand() % 4;
 
@@ -108,6 +110,12 @@ void run() {
             score++;
             mvwprintw(stdscr, max_y-1, 1, "score: %d", score);
             refresh();
+        }
+
+        /* keep growing until size of SNAKE_START_LEN */
+        if (i < SNAKE_START_LEN) {
+            grow_snake(snake_head);
+            i++;
         }
 
         /* calculate time diff */
